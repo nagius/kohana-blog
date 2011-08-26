@@ -8,7 +8,7 @@ Route::set('blog', 'blog(/page<page>)', array('page' => '\d+'))
 
 Route::set('blog/filter', 'blog/<action>/<name>(/page<page>)', array(
 		'action'  => 'category|subcategory|tag',
-		'name'    => '[A-Za-z0-9_-]+',
+		'name'    => '[A-Za-z0-9_-\s]+',
 		'page'    => '\d+',
 	))->defaults(array(
 		'controller' => 'blog',
