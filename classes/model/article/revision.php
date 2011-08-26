@@ -23,6 +23,24 @@ class Model_Article_Revision extends Versioned_Revision {
 		);
 	}
 
+	// Foreign keys helper, code taken from sprig/classes/sprig/core.php
+	public function fk($table = NULL)
+	{
+		$key = 'article_'.$this->_primary_key;
+
+		if ($table)
+		{
+			if ($table === TRUE)
+			{
+				$table = $this->_table;
+			}
+
+			return $table.'.'.$key;
+		}
+
+		return $key;
+	}
+
 	/**
 	 * Overload __get() to return the comments as an
 	 * HTML-formatted string
