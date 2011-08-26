@@ -89,7 +89,8 @@ class Controller_Admin_Blog_Article extends Controller_Admin {
 				Arr::get($_POST,'keywords'),
 				Arr::get($_POST,'criteria'),
 				Arr::get($_POST,'tags'),
-				Arr::get($_POST,'date'),
+				Arr::get($_POST,'datemin'),
+				Arr::get($_POST,'datemax'),
 				$type);
 		else 
 			$articles = $search->search_by_state($type);

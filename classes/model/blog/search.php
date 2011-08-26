@@ -359,7 +359,7 @@ class Model_Blog_Search extends Sprig {
 	 * @param   string  [optional] article state
 	 * @return  Model_Article collection
 	 */
-	public function search_by_criteria($keywords, $criteria, $tags, $date, $state = 'published') {
+	public function search_by_criteria($keywords, $criteria, $tags, $datemin, $datemax, $state = 'published') {
 		Kohana::$log->add(Kohana::DEBUG,
 			'Executing Model_Blog_Search::search_by_criteria');
 
@@ -386,9 +386,13 @@ class Model_Blog_Search extends Sprig {
 		}
 
 		// Search by date (could be anything that strtotime() understand)
-		if(isset($date) && strlen($date)>0)
+		if(isset($datemin) && strlen($datemin)>0)
 		{
-			$query->where('DATE(FROM_UNIXTIME("articles.date"))', '=', date("Y-m-d", strtotime($date)));
+			$query->where('DATE(FROM_UNIXTIME("articles.date"))', '>=', date("Y-m-d", strtotime($datemin)));
+		}
+		if(isset($datemax) && strlen($datemax)>0)
+		{
+			$query->where('DATE(FROM_UNIXTIME("articles.date"))', '<=', date("Y-m-d", strtotime($datemax)));
 		}
 
 		// Search by state

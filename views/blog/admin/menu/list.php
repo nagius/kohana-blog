@@ -31,7 +31,8 @@
 	}
 	echo "</ul>";
 	echo "<br>".__('Date').":";
-	echo Form::input('date', Arr::get($_POST,'date'))."<br>";
+	echo Form::input('datemin', Arr::get($_POST,'datemin'))."<br>";
+	echo Form::input('datemax', Arr::get($_POST,'datemax'))."<br>";
 	echo Form::submit('submit_search',__('Search')).Form::close();
  ?>
 
