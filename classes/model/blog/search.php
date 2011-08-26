@@ -353,6 +353,71 @@ class Model_Blog_Search extends Sprig {
 	}
 
 	/**
+	 * Load articles by multi criteria
+	 *
+	 * @param   string  article tag
+	 * @param   string  [optional] article state
+	 * @return  Model_Article collection
+	 */
+	public function search_by_criteria($keywords, $criteria, $tags, $date, $state = 'published') {
+		Kohana::$log->add(Kohana::DEBUG,
+			'Executing Model_Blog_Search::search_by_criteria');
+
+		$query = DB::select();
+
+		// Search by text input with criteria
+		if(isset($criteria))
+		{
+			$query->where_open();
+			foreach($criteria as $criterion)
+				$query->or_where($criterion, 'like', "%".$keywords."%");
+			$query->where_close();
+		}
+
+		// Search by tags
+		if(isset($tags))
+		{
+			$sub_query= DB::select('article_id')->distinct(TRUE)
+				->from('articles_tags')
+				->join('tags')->on('tags.id', '=', 'articles_tags.tag_id');
+			foreach($tags as $tag)
+				$sub_query->or_where('tags.name', 'like', $tag);
+			$query->join(array($sub_query, 'subquery'))->on('articles.id', '=', 'subquery.article_id');
+		}
+
+		// Search by date (could be anything that strtotime() understand)
+		if(isset($date) && strlen($date)>0)
+		{
+			$query->where('DATE(FROM_UNIXTIME("articles.date"))', '=', date("Y-m-d", strtotime($date)));
+		}
+
+		// Search by state
+		if ($state != 'all')
+		{
+			$query->where('state', '=', $state);
+		}
+
+		// Create a clone query to get the total number of records
+		$total = clone $query;
+		$total->select(array('COUNT("*")', 'count'))->from('articles');
+		$this->total=$total->execute()->get('count');
+
+		// Set the final sort 
+		$query->order_by('id', 'DESC')->order_by('date', 'DESC');
+
+		// Set pagination stuff
+		$limit = $this->limit;
+		$this->pagination->setup(array(
+			'total_items'    => $this->total,
+			'items_per_page' => $limit,
+		));
+		$query->offset($this->pagination->offset);
+
+		return $this->load($query, $limit);
+
+	}
+
+	/**
 	 * Get the top recent articles
 	 *
 	 * @param   int number of articles to load
