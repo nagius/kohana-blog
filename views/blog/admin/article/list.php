@@ -35,7 +35,7 @@ $(document).ready(function()
 <table id='articles' class="tablesorter">
 <thead>
 <tr>
-    <th>Id</th>
+    <th>Date</th>
     <th>Title</th>
     <th>State</th>
     <th>Actions</th>

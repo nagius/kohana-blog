@@ -1,6 +1,6 @@
 <?php foreach ($articles as $article): ?>
 <tr>
-    <td><?= $article->id ?></td>
+    <td><?= date("d-m-Y",$article->date) ?></td>
     <td><?= $article->title ?></td>
     <td><?= $article->state ?></td>
     <td><?= HTML::anchor($request->uri(array('action'=>'edit','id'=>$article->id)),"Edit", array('class'=>'edit')) ?></td>
