@@ -83,10 +83,17 @@ class Controller_Admin_Blog_Article extends Controller_Admin {
 
 		$type = Request::instance()->param('type', 'all');
 		$search = Sprig::factory('blog_search');
-		if(isset($_POST['title']))
-			$articles = $search->search_by_title($_POST['title'], $type);
-		else
+
+		if(isset($_POST['activate']))
+			$articles = $search->search_by_criteria(
+				Arr::get($_POST,'keywords'),
+				Arr::get($_POST,'criteria'),
+				Arr::get($_POST,'tags'),
+				Arr::get($_POST,'date'),
+				$type);
+		else 
 			$articles = $search->search_by_state($type);
+
 		$legend = __(':state Articles', array(':state' => ucfirst($type)));
 
 		if(Request::$is_ajax)
@@ -106,6 +113,10 @@ class Controller_Admin_Blog_Article extends Controller_Admin {
 				->set('tbody', View::factory('blog/admin/article/list_tbody')
 					->bind('articles', $articles)
 				);
+
+			// Load all tags for contextbox search
+			$tags = Sprig::factory('tag')->load(NULL, FALSE);
+			$this->template->set_global('tags', $tags);
 
 			// TODO: rewrite this cleanly
 			$this->template->set_global('quicklinks', array(
