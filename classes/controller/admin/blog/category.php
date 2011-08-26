@@ -24,7 +24,7 @@ class Controller_Admin_Blog_Category extends Controller_Admin {
 
 	protected $_view_map = array(
 		'list'    => 'admin/layout/wide_column_with_menu',
-		'default' => 'admin/layout/narrow_column_with_menu',
+		'default' => 'admin/layout/narrow_column',
 	);
 
 	protected $_view_menu_map = array();
@@ -68,8 +68,10 @@ class Controller_Admin_Blog_Category extends Controller_Admin {
 		Kohana::$log->add(Kohana::DEBUG,
 			'Executing Controller_Admin_Category::action_list');
 		$this->template->content = View::factory('blog/admin/category_list')
-			->bind('request', $this->request)
-			->bind('categories', $categories);
+			->set('tbody', View::factory('blog/admin/category_list_tbody')
+				->bind('request', $this->request)
+				->bind('categories', $categories)
+			);
 		$categories = Sprig::factory('category')->load(NULL, FALSE);
 	}
 
@@ -148,16 +150,35 @@ class Controller_Admin_Blog_Category extends Controller_Admin {
 	public function action_delete() {
 		Kohana::$log->add(Kohana::DEBUG, 'Executing Controller_Admin_Category::action_delete');
 
+		// Bind locally
+		$category = & $this->_resource;
+		$name = $category->name;
+
+		if(Request::$is_ajax)
+		{
+			try
+			{
+				$category->delete();
+				$this->request->response = json_encode(
+					array('success' => TRUE, 'flash_class' => 'success', 'text'=>'The category, '.$name.' has been deleted.')
+				); //return a json encoded result
+			}
+			catch (Exception $e)
+			{
+				Kohana::$log->add(Kohana::ERROR, 'Error occured deleting category, id='.$category->id.', '.$e->getMessage());
+				$this->request->response = json_encode(
+					array('success' => FALSE, 'flash_class' => "error", 'text'=> 'An error occured deleting category,'.$name)
+				);
+			}
+			return; //end ajax
+		}
+
 		// If deletion is not desired, redirect to list
 		if (isset($_POST['no']))
 			$this->request->redirect( $this->request->uri(array('action'=>'list', 'id'=>NULL)) );
 
 		$this->template->content = View::factory('blog/admin/category_delete')
 			->bind('category', $this->_resource);
-
-		// Bind locally
-		$category = & $this->_resource;
-		$name = $category->name;
 
 		// If deletion is confirmed
 		if (isset($_POST['yes']))
