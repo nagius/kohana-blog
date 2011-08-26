@@ -30,6 +30,7 @@ $(document).ready(function()
 
 </script>
 
+<?= HTML::anchor(Request::instance()->uri(array('action'=>'new', 'page'=>NULL)), __("Create article")) ?>
 <h2><?php echo $legend ?></h2>
 <?= $pagination ?>
 <table id='articles' class="tablesorter">

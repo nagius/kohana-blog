@@ -123,7 +123,6 @@ class Controller_Admin_Blog_Article extends Controller_Admin {
 					'Drafts'.$drafts => Request::instance()->uri(array('action'=>'list', 'type'=>'draft')),
 					'Published'.$pub => Request::instance()->uri(array('action'=>'list', 'type'=>'published')),
 					'Archived'.$arch => Request::instance()->uri(array('action'=>'list', 'type'=>'archived')),
-					'Create Article' => Request::instance()->uri(array('action'=>'new', 'page'=>NULL)),
 				));
 		}
 	}
