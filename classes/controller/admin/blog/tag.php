@@ -67,8 +67,8 @@ class Controller_Admin_Blog_Tag extends Controller_Admin {
 	public function action_list() {
 		Kohana::$log->add(Kohana::DEBUG,
 			'Executing Controller_Admin_Tag::action_list');
-		$this->template->content = View::factory('blog/admin/tag_list')
-			->set('tbody', View::factory('blog/admin/tag_list_tbody')
+		$this->template->content = View::factory('blog/admin/tag/list')
+			->set('tbody', View::factory('blog/admin/tag/list_tbody')
 				->bind('request', $this->request)
 				->bind('tags', $tags)
 			);
@@ -81,7 +81,7 @@ class Controller_Admin_Blog_Tag extends Controller_Admin {
 	public function action_new() {
 		Kohana::$log->add(Kohana::DEBUG,
 			'Executing Controller_Admin_Tag::action_new');
-		$this->template->content = View::factory('blog/admin/tag_form')
+		$this->template->content = View::factory('blog/admin/tag/form')
 			->set('legend', __('Create Tag'))
 			->set('submit', __('Create'))
 			->bind('tag', $tag)
@@ -114,7 +114,7 @@ class Controller_Admin_Blog_Tag extends Controller_Admin {
 	public function action_edit() {
 		Kohana::$log->add(Kohana::DEBUG,
 			'Executing Controller_Admin_Tag::action_edit');
-		$this->template->content = View::factory('blog/admin/tag_form')
+		$this->template->content = View::factory('blog/admin/tag/form')
 			->set('legend', __('Modify Tag'))
 			->set('submit', __('Save'))
 			->bind('tag', $this->_resource)
@@ -178,7 +178,7 @@ class Controller_Admin_Blog_Tag extends Controller_Admin {
 		if (isset($_POST['no']))
 			$this->request->redirect( $this->request->uri(array('action'=>'list', 'id'=>NULL)) );
 
-		$this->template->content = View::factory('blog/admin/tag_delete')
+		$this->template->content = View::factory('blog/admin/tag/delete')
 			->bind('tag', $this->_resource);
 
 		// If deletion is confirmed

@@ -93,7 +93,7 @@ class Controller_Admin_Blog_Article extends Controller_Admin {
 		{
 			// return a json encoded HTML table
 			$this->request->response = json_encode(
-				View::factory('blog/admin/article_list_tbody')
+				View::factory('blog/admin/article/list_tbody')
 					->bind('articles', $articles)
 					->bind('request', $this->request)
 					->render()
@@ -101,10 +101,10 @@ class Controller_Admin_Blog_Article extends Controller_Admin {
 		}
 		else
 		{
-			$this->template->content = View::factory('blog/admin/article_list')
+			$this->template->content = View::factory('blog/admin/article/list')
 				->bind('legend', $legend)
 				->bind('pagination', $pagination)
-				->set('tbody', View::factory('blog/admin/article_list_tbody')
+				->set('tbody', View::factory('blog/admin/article/list_tbody')
 					->bind('request', $this->request)
 					->bind('articles', $articles)
 				);
@@ -125,7 +125,7 @@ class Controller_Admin_Blog_Article extends Controller_Admin {
 	public function action_new() {
 		Kohana::$log->add(Kohana::DEBUG,
 			'Executing Controller_Admin_Article::action_new');
-		$this->template->content = View::factory('blog/admin/article_form')
+		$this->template->content = View::factory('blog/admin/article/form')
 			->set('legend', __('Create Article'))
 			->set('submit', __('Save'))
 			->set('slug_editable', FALSE)
@@ -170,7 +170,7 @@ class Controller_Admin_Blog_Article extends Controller_Admin {
 	public function action_edit() {
 		Kohana::$log->add(Kohana::DEBUG,
 			'Executing Controller_Admin_Article::action_edit');
-		$this->template->content = View::factory('blog/admin/article_form')
+		$this->template->content = View::factory('blog/admin/article/form')
 			->set('legend', __('Modify Article'))
 			->set('submit', __('Save'))
 			->set('slug_editable', FALSE)
@@ -233,7 +233,7 @@ class Controller_Admin_Blog_Article extends Controller_Admin {
 			)) );
 		}
 
-		$this->template->content = View::factory('blog/admin/article_history')
+		$this->template->content = View::factory('blog/admin/article/history')
 			->bind('request', $this->request)
 			->bind('article', $this->_resource)
 			->bind('revisions', $revisions);
@@ -246,7 +246,7 @@ class Controller_Admin_Blog_Article extends Controller_Admin {
 	public function action_diff() {
 		Kohana::$log->add(Kohana::DEBUG,
 			'Executing Controller_Admin_Article::action_diff');
-		$this->template->content = View::factory('blog/admin/article_diff')
+		$this->template->content = View::factory('blog/admin/article/diff')
 			->bind('article', $this->_resource)
 			->bind('ver1', $ver1)
 			->bind('ver2', $ver2)
@@ -277,7 +277,7 @@ class Controller_Admin_Blog_Article extends Controller_Admin {
 		if (isset($_POST['no']))
 			$this->request->redirect( $this->request->uri(array('action'=>'list', 'id'=>NULL)) );
 
-		$this->template->content = View::factory('blog/admin/article_delete')
+		$this->template->content = View::factory('blog/admin/article/delete')
 			->bind('article', $this->_resource);
 
 		// Bind locally

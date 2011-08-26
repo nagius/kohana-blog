@@ -67,8 +67,8 @@ class Controller_Admin_Blog_Subcategory extends Controller_Admin {
 	public function action_list() {
 		Kohana::$log->add(Kohana::DEBUG,
 			'Executing Controller_Admin_Subcategory::action_list');
-		$this->template->content = View::factory('blog/admin/subcategory_list')
-			->set('tbody', View::factory('blog/admin/subcategory_list_tbody')
+		$this->template->content = View::factory('blog/admin/subcategory/list')
+			->set('tbody', View::factory('blog/admin/subcategory/list_tbody')
 				->bind('request', $this->request)
 				->bind('subcategories', $subcategories)
 			);
@@ -81,7 +81,7 @@ class Controller_Admin_Blog_Subcategory extends Controller_Admin {
 	public function action_new() {
 		Kohana::$log->add(Kohana::DEBUG,
 			'Executing Controller_Admin_Subcategory::action_new');
-		$this->template->content = View::factory('blog/admin/subcategory_form')
+		$this->template->content = View::factory('blog/admin/subcategory/form')
 			->set('legend', __('Create Subcategory'))
 			->set('submit', __('Create'))
 			->bind('subcategory', $subcategory)
@@ -114,7 +114,7 @@ class Controller_Admin_Blog_Subcategory extends Controller_Admin {
 	public function action_edit() {
 		Kohana::$log->add(Kohana::DEBUG,
 			'Executing Controller_Admin_Subcategory::action_edit');
-		$this->template->content = View::factory('blog/admin/subcategory_form')
+		$this->template->content = View::factory('blog/admin/subcategory/form')
 			->set('legend', __('Modify Subcategory'))
 			->set('submit', __('Save'))
 			->bind('subcategory', $this->_resource)
@@ -177,7 +177,7 @@ class Controller_Admin_Blog_Subcategory extends Controller_Admin {
 		if (isset($_POST['no']))
 			$this->request->redirect( $this->request->uri(array('action'=>'list', 'id'=>NULL)) );
 
-		$this->template->content = View::factory('blog/admin/subcategory_delete')
+		$this->template->content = View::factory('blog/admin/subcategory/delete')
 			->bind('subcategory', $this->_resource);
 
 		// If deletion is confirmed
