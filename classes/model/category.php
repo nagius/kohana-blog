@@ -19,19 +19,20 @@ class Model_Category extends Sprig
 		$this->_fields += array(
 			'id'       => new Sprig_Field_Auto,
 			'name'     => new Sprig_Field_Char,
-			'articles' => new Sprig_Field_HasMany,
+			'subcategories' => new Sprig_Field_HasMany,
 		);
 	}
 
 	/**
 	 * Get all published articles belonging to this category
 	 */
-	public function published(Database_Query_Builder_Select $query = NULL, $limit = 1) {
+/*	public function published(Database_Query_Builder_Select $query = NULL, $limit = 1) {
 		return Sprig::factory('article', array(
 			'state'    => 'published',
 			'category' => $this,
 		))->load($query, $limit);
 	}
+*/
 
 	/**
 	 * Overload Sprig::delete() to update child articles
@@ -46,15 +47,15 @@ class Model_Category extends Sprig
 
 		$uncategorized = Sprig::factory('category', array('name'=>'uncategorized'))->load();
 
-		// Modify category IDs for all child articles
+		// Modify category IDs for all child subcategories
 		try
 		{
-			DB::update('articles')->value('category_id', $uncategorized->id)
+			DB::update('subcategories')->value('category_id', $uncategorized->id)
 				->where('category_id', '=', $this->id)->execute();
 		}
 		catch (Database_Exception $e)
 		{
-			Kohana::$log->add(Kohana::ERROR, 'Exception occured while modifying deleted category\'s articles. '.$e->getMessage());
+			Kohana::$log->add(Kohana::ERROR, 'Exception occured while modifying deleted category\'s subcategories. '.$e->getMessage());
 			return $this;
 		}
 

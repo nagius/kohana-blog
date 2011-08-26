@@ -123,7 +123,11 @@ class Model_Blog_Search extends Sprig {
 			throw new Kohana_Exception('Unknown category supplied.', NULL, 404);
 
 		$query = DB::select()->where('state', '=', $state)
-			->where('category_id', '=', $category->id)
+			->where('subcategory_id', 'IN', 
+				DB::select('id')
+					->from('subcategories')
+					->where('category_id', '=', $category->id)
+			)
 			->order_by('id', 'DESC')
 			->order_by('date', 'DESC');
 		$limit = $this->limit;
@@ -131,7 +135,49 @@ class Model_Blog_Search extends Sprig {
 		$this->total = DB::select(DB::expr('COUNT(*) AS count'))
 			->from('articles')
 			->where('state', '=', $state)
-			->where('category_id', '=', $category->id)
+			->where('subcategory_id', 'IN', 
+				DB::select('id')
+					->from('subcategories')
+					->where('category_id', '=', $category->id)
+			)
+			->execute()->get('count');
+
+		$this->pagination->setup(array(
+			'total_items'    => $this->total,
+			'items_per_page' => $limit,
+		));
+		$query->offset($this->pagination->offset);
+
+		return $this->load($query, $limit);
+	}
+
+	/**
+	 * Load articles by subcategory
+	 *
+	 * @param   string  article subcategory
+	 * @param   string  [optional] article state
+	 * @return  Model_Article collection
+	 */
+	public function search_by_subcategory($subcategory, $state = 'published') {
+		Kohana::$log->add(Kohana::DEBUG,
+			'Executing Model_Blog_Search::search_by_subcategory');
+
+		$subcategory = Sprig::factory('subcategory', array(
+			'name' => $subcategory))->load();
+
+		if ( ! $subcategory->loaded())
+			throw new Kohana_Exception('Unknown subcategory supplied.', NULL, 404);
+
+		$query = DB::select()->where('state', '=', $state)
+			->where('subcategory_id', '=', $subcategory->id)
+			->order_by('id', 'DESC')
+			->order_by('date', 'DESC');
+		$limit = $this->limit;
+
+		$this->total = DB::select(DB::expr('COUNT(*) AS count'))
+			->from('articles')
+			->where('state', '=', $state)
+			->where('subcategory_id', '=', $subcategory->id)
 			->execute()->get('count');
 
 		$this->pagination->setup(array(

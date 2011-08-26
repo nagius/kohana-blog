@@ -54,6 +54,28 @@ abstract class Controller_Blog_Articles extends Controller_Template_Website {
 
 	/**
 	 * Display a list of published articles,
+	 * filtered by subcategory,
+	 * with pagination
+	 *
+	 * Set request param `name` to the subcategory name
+	 */
+	public function action_subcategory() {
+		Kohana::$log->add(Kohana::DEBUG,
+			'Executing Controller_Blog::action_subcategory');
+		$this->template->content = View::factory('blog/front/list')
+			->bind('legend', $legend)
+			->bind('articles', $articles)
+			->bind('pagination', $pagination);
+
+		$subcategory = $this->request->param('name');
+		$search     = Sprig::factory('blog_search');
+		$articles   = $search->search_by_subcategory($subcategory);
+		$pagination = $search->pagination;
+		$legend     = __(':name Articles', array(':name'=>ucfirst($subcategory)));
+	}
+
+	/**
+	 * Display a list of published articles,
 	 * filtered by tag,
 	 * with pagination
 	 *

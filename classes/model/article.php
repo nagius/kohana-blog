@@ -49,8 +49,8 @@ class Model_Article extends Versioned_Sprig
 			'statistic'  => new Sprig_Field_HasOne(array(
 				'model'  => 'statistic',
 			)),
-			'category'   => new Sprig_Field_BelongsTo(array(
-				'model'  => 'category',
+			'subcategory'   => new Sprig_Field_BelongsTo(array(
+				'model'  => 'subcategory',
 				'null'   => FALSE,
 			)),
 			'author'     => new Sprig_Field_BelongsTo(array(
@@ -78,7 +78,7 @@ class Model_Article extends Versioned_Sprig
 	/**
 	 * Overload Sprig::__get() to get
 	 * - permalink URLs
-	 * - associated category URL
+	 * - associated subcategory and category URL
 	 * - tag list (with URLs)
 	 * - article excerpt
 	 */
@@ -92,7 +92,12 @@ class Model_Article extends Versioned_Sprig
 		elseif ($name == 'category_link')
 		{
 			return Route::get('blog/filter')->uri(array(
-				'action' => 'category', 'name' => $this->category->load()->name));
+				'action' => 'category', 'name' => $this->subcategory->load()->category->load()->name));
+		}
+		elseif ($name == 'subcategory_link')
+		{
+			return Route::get('blog/filter')->uri(array(
+				'action' => 'subcategory', 'name' => $this->subcategory->load()->name));
 		}
 		elseif ($name == 'tag_list')
 		{

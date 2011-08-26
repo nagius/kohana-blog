@@ -42,12 +42,14 @@ class Controller_Admin_Blog extends Controller_Admin {
 			->bind('stats', $stats);
 
 		$categories = Sprig::factory('category')->load(NULL, FALSE);
+		$subcategories = Sprig::factory('subcategory')->load(NULL, FALSE);
 		$tags       = Sprig::factory('tag')->load(NULL, FALSE);
 		$articles   = Sprig::factory('article')->load(NULL, FALSE);
 		$comments   = Sprig::factory('blog_comment')->load(NULL, FALSE);
 
 		$stats = array();
 		$stats['categories']['total'] = count($categories);
+		$stats['subcategories']['total'] = count($subcategories);
 		$stats['tags']['total']       = count($tags);
 		$stats['articles']['total']   = count($articles);
 		$stats['comments']['total']   = count($comments);

@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `articles` (
 	`date` int(10) NOT NULL,
 	`state` varchar(16) NOT NULL,
 	`author_id` int(11) NOT NULL,
-	`category_id` int(11) NOT NULL,
+	`subcategory_id` int(11) NOT NULL,
 	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

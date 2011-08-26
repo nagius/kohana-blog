@@ -5,6 +5,11 @@
 			<li>Total: <?php echo $stats['categories']['total'] ?></li>
 		</ul>
 	</li>
+	<li>Subcategorires:
+		<ul>
+			<li>Total: <?php echo $stats['subcategories']['total'] ?></li>
+		</ul>
+	</li>
 	<li>Tags:
 		<ul>
 			<li>Total: <?php echo $stats['tags']['total'] ?></li>

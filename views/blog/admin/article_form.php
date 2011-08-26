@@ -45,10 +45,10 @@
 	<?php echo $article->input('state') ?> 
 </p>
 
-<?php echo isset($errors['category']) ? '<p class="error">'.$errors['category'].'</p>' : '' ?> 
+<?php echo isset($errors['subcategory']) ? '<p class="error">'.$errors['subcategory'].'</p>' : '' ?> 
 <p>
-	<?php echo $article->label('category') ?> 
-	<?php echo $article->input('category') ?> 
+	<?php echo $article->label('subcategory') ?> 
+	<?php echo $article->input('subcategory') ?> 
 </p>
 
 <?php echo isset($errors['tags']) ? '<p class="error">'.$errors['tags'].'</p>' : '' ?> 

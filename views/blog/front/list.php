@@ -16,8 +16,8 @@
 					<?php echo $article->verbose('date') ?> 
 				</time><br />
 
-				Posted to <?php echo HTML::anchor($article->category_link,
-					ucfirst($article->category->name)) ?><br ?>
+				Posted to <?= HTML::anchor($article->category_link,ucfirst($article->subcategory->category->load()->name)) ?> &nbsp;/
+				          <?= HTML::anchor($article->subcategory_link,ucfirst($article->subcategory->name)) ?><br>
 				Tagged in <?php echo $article->tag_list ?> 
 			</p>
 		</header>
