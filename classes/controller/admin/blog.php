@@ -50,7 +50,7 @@ class Controller_Admin_Blog extends Controller_Admin {
 	protected function _menu() {
 		return View::factory('blog/admin/menu')
 			->set('links', array(
-				'Create Post'     => Route::get('admin/blog')->uri(array('controller'=>'post', 'action'=>'new')),
+				'Create Post'     => Route::get('admin/blog')->uri(array('controller'=>'article', 'action'=>'new')),
 				'Create Category' => Route::get('admin/blog')->uri(array('controller'=>'category', 'action'=>'new')),
 				'Create Tag'      => Route::get('admin/blog')->uri(array('controller'=>'tag', 'action'=>'new')),
 			));
