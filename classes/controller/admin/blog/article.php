@@ -95,7 +95,6 @@ class Controller_Admin_Blog_Article extends Controller_Admin {
 			$this->request->response = json_encode(
 				View::factory('blog/admin/article/list_tbody')
 					->bind('articles', $articles)
-					->bind('request', $this->request)
 					->render()
 			);
 		}
@@ -105,7 +104,6 @@ class Controller_Admin_Blog_Article extends Controller_Admin {
 				->bind('legend', $legend)
 				->bind('pagination', $pagination)
 				->set('tbody', View::factory('blog/admin/article/list_tbody')
-					->bind('request', $this->request)
 					->bind('articles', $articles)
 				);
 
@@ -234,7 +232,6 @@ class Controller_Admin_Blog_Article extends Controller_Admin {
 		}
 
 		$this->template->content = View::factory('blog/admin/article/history')
-			->bind('request', $this->request)
 			->bind('article', $this->_resource)
 			->bind('revisions', $revisions);
 		$revisions = $this->_resource->revisions;

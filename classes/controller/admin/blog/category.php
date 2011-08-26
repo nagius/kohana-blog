@@ -69,7 +69,6 @@ class Controller_Admin_Blog_Category extends Controller_Admin {
 			'Executing Controller_Admin_Category::action_list');
 		$this->template->content = View::factory('blog/admin/category/list')
 			->set('tbody', View::factory('blog/admin/category/list_tbody')
-				->bind('request', $this->request)
 				->bind('categories', $categories)
 			);
 		$categories = Sprig::factory('category')->load(NULL, FALSE);

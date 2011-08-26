@@ -69,7 +69,6 @@ class Controller_Admin_Blog_Tag extends Controller_Admin {
 			'Executing Controller_Admin_Tag::action_list');
 		$this->template->content = View::factory('blog/admin/tag/list')
 			->set('tbody', View::factory('blog/admin/tag/list_tbody')
-				->bind('request', $this->request)
 				->bind('tags', $tags)
 			);
 		$tags = Sprig::factory('tag')->load(NULL, FALSE);

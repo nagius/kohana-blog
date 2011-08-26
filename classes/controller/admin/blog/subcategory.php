@@ -69,7 +69,6 @@ class Controller_Admin_Blog_Subcategory extends Controller_Admin {
 			'Executing Controller_Admin_Subcategory::action_list');
 		$this->template->content = View::factory('blog/admin/subcategory/list')
 			->set('tbody', View::factory('blog/admin/subcategory/list_tbody')
-				->bind('request', $this->request)
 				->bind('subcategories', $subcategories)
 			);
 		$subcategories = Sprig::factory('subcategory')->load(NULL, FALSE);
