@@ -27,7 +27,7 @@ class Controller_Admin_Blog_Article extends Controller_Admin {
 	protected $_acl_required = 'all';
 
 	protected $_view_map = array(
-		'history' => 'admin/layout/full_width',
+		'history' => 'admin/layout/wide_column',
 		'default' => 'admin/layout/wide_column_with_menu',
 	);
 
