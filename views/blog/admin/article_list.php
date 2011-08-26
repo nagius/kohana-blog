@@ -2,8 +2,7 @@
 <?php if (count($articles) == 0): ?>
 <p>
 	There are no posts as this time
-	(<?php echo HTML::anchor(Route::$current
-		->uri(array('action'=>'new')), 'create one') ?>).
+	(<?php echo HTML::anchor($request->uri(array('action'=>'new')), 'create one') ?>).
 </p>
 <?php else:
 	// Create article list
