@@ -1,24 +1,50 @@
+<script type="text/javascript" src="/media/js/jquery.form.js"></script>
+<script type="text/javascript">
+$(document).ready(function() 
+{ 
+    //attach onSubmit to the form
+    $('#search_form').submit(function()
+    {
+        //When submitted do an ajaxSubmit
+        $(this).ajaxSubmit(
+        {
+            dataType: 'json',
+            success: function(html, responseCode) 
+            {
+                $('#articles tbody tr').remove();
+                $('#articles tbody').append(html);
+                $('#articles').trigger("update");
+            }
+        });
+        //return false to prevent normal submit
+        return false;
+    })
+}
+); 
+
+$(document).ready(function() 
+{ 
+    $("#articles").tablesorter(); 
+} 
+); 
+
+</script>
+
 <h2><?php echo $legend ?></h2>
-<?php if (count($articles) == 0): ?>
-<p>
-	There are no posts as this time
-	(<?php echo HTML::anchor($request->uri(array('action'=>'new')), 'create one') ?>).
-</p>
-<?php else:
-	// Create article list
-	$grid = new Grid;
-	$grid->column()->field('id')->title('ID');
-	$grid->column()->field('title')->title('Title');
-	$grid->column()->field('state')->title('State');
-	$grid->column('action')->title('Actions')->text('Edit')->class('edit')
-		->route($request)->params(array('action'=>'edit'));
-	$grid->column('action')->title('')->text('History')->class('history')
-		->route($request)->params(array('action'=>'history'));
-	$grid->data($articles);
-
-	echo $pagination;
-	echo $grid->render();
-	echo $pagination;
-
-endif;
+<?= $pagination ?>
+<table id='articles' class="tablesorter">
+<thead>
+<tr>
+    <th>Id</th>
+    <th>Title</th>
+    <th>State</th>
+    <th>Actions</th>
+    <th></th>
+</tr>
+</thead>
+<tbody>
+<?= $tbody ?>
+</tbody>
+</table>
+<?= $pagination ?>
 

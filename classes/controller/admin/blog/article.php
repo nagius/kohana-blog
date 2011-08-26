@@ -32,6 +32,8 @@ class Controller_Admin_Blog_Article extends Controller_Admin {
 	);
 
 	protected $_view_menu_map = array();
+	   'list'   => 'blog/admin/menu/list',
+	);
 
 	protected $_current_nav = 'admin/blog';
 
@@ -39,25 +41,7 @@ class Controller_Admin_Blog_Article extends Controller_Admin {
 	 * Generate menu for blog management
 	 */
 	protected function _menu() {
-		// Get count of draft articles
-		$drafts = Sprig::factory('article', array('state'=>'draft'))->load(NULL,FALSE)->count();
-		$drafts = ($drafts > 0) ? ' ['.$drafts.']' : '';
-
-		// Get count of published articles
-		$pub = Sprig::factory('article', array('state'=>'published'))->load(NULL,FALSE)->count();
-		$pub = ($pub > 0) ? ' ['.$pub.']' : '';
-
-		// Get count of archived articles
-		$arch = Sprig::factory('article', array('state'=>'archived'))->load(NULL,FALSE)->count();
-		$arch = ($arch > 0) ? ' ['.$arch.']' : '';
-
-		return View::factory('blog/admin/menu/default')
-			->set('links', array(
-				'Drafts'.$drafts => Request::instance()->uri(array('action'=>'list', 'type'=>'draft')),
-				'Published'.$pub => Request::instance()->uri(array('action'=>'list', 'type'=>'published')),
-				'Archived'.$arch => Request::instance()->uri(array('action'=>'list', 'type'=>'archived')),
-				'Create Article' => Request::instance()->uri(array('action'=>'new', 'page'=>NULL)),
-			));
+		return View::factory('blog/admin/menu/default');
 	}
 
 	/**
@@ -84,16 +68,55 @@ class Controller_Admin_Blog_Article extends Controller_Admin {
 	public function action_list() {
 		Kohana::$log->add(Kohana::DEBUG,
 			'Executing Controller_Admin_Article::action_list');
-		$this->template->content = View::factory('blog/admin/article_list')
-			->bind('request', $this->request)
-			->bind('legend', $legend)
-			->bind('pagination', $pagination)
-			->bind('articles', $articles);
+
+		// Get count of draft articles
+		$drafts = Sprig::factory('article', array('state'=>'draft'))->load(NULL,FALSE)->count();
+		$drafts = ($drafts > 0) ? ' ['.$drafts.']' : '';
+
+		// Get count of published articles
+		$pub = Sprig::factory('article', array('state'=>'published'))->load(NULL,FALSE)->count();
+		$pub = ($pub > 0) ? ' ['.$pub.']' : '';
+
+		// Get count of archived articles
+		$arch = Sprig::factory('article', array('state'=>'archived'))->load(NULL,FALSE)->count();
+		$arch = ($arch > 0) ? ' ['.$arch.']' : '';
 
 		$type = Request::instance()->param('type', 'all');
 		$search = Sprig::factory('blog_search');
-		$articles = $search->search_by_state($type);
+		if(isset($_POST['title']))
+			$articles = $search->search_by_title($_POST['title'], $type);
+		else
+			$articles = $search->search_by_state($type);
 		$legend = __(':state Articles', array(':state' => ucfirst($type)));
+
+		if(Request::$is_ajax)
+		{
+			// return a json encoded HTML table
+			$this->request->response = json_encode(
+				View::factory('blog/admin/article_list_tbody')
+					->bind('articles', $articles)
+					->bind('request', $this->request)
+					->render()
+			);
+		}
+		else
+		{
+			$this->template->content = View::factory('blog/admin/article_list')
+				->bind('legend', $legend)
+				->bind('pagination', $pagination)
+				->set('tbody', View::factory('blog/admin/article_list_tbody')
+					->bind('request', $this->request)
+					->bind('articles', $articles)
+				);
+
+			// TODO: rewrite this cleanly
+			$this->template->set_global('quicklinks', array(
+					'Drafts'.$drafts => Request::instance()->uri(array('action'=>'list', 'type'=>'draft')),
+					'Published'.$pub => Request::instance()->uri(array('action'=>'list', 'type'=>'published')),
+					'Archived'.$arch => Request::instance()->uri(array('action'=>'list', 'type'=>'archived')),
+					'Create Article' => Request::instance()->uri(array('action'=>'new', 'page'=>NULL)),
+				));
+		}
 	}
 
 	/**
