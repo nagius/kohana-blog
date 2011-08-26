@@ -24,6 +24,8 @@ class Controller_Admin_Blog_Comment extends Controller_Admin {
 		'delete'  => 'admin/layout/narrow_column_with_menu',
 		'default' => 'admin/layout/wide_column_with_menu',
 	);
+	
+	protected $_view_menu_map = array();
 
 	protected $_current_nav = 'admin/blog';
 
@@ -43,7 +45,7 @@ class Controller_Admin_Blog_Comment extends Controller_Admin {
 		$spam = Sprig::factory('blog_comment', array('state'=>'spam'))->load(NULL,FALSE)->count();
 		$spam = ($spam > 0) ? ' ['.$spam.']' : '';
 
-		return View::factory('blog/admin/menu')
+		return View::factory('blog/admin/menu/default')
 			->set('links', array(
 				'Approved Comments'.$ham   => $this->request->uri(array('action' => 'approved')),
 				'Moderation Queue'.$queued => $this->request->uri(array('action' => 'queue')),

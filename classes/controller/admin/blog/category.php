@@ -27,6 +27,8 @@ class Controller_Admin_Blog_Category extends Controller_Admin {
 		'default' => 'admin/layout/narrow_column_with_menu',
 	);
 
+	protected $_view_menu_map = array();
+
 	protected $_resource_required = array('edit', 'delete');
 
 	protected $_current_nav = 'admin/blog';
@@ -35,7 +37,7 @@ class Controller_Admin_Blog_Category extends Controller_Admin {
 	 * Generate menu for blog management
 	 */
 	protected function _menu() {
-		return View::factory('blog/admin/menu')
+		return View::factory('blog/admin/menu/default')
 			->set('links', array(
 				'Create Category' => $this->request->uri(array('action'=>'new')),
 			));

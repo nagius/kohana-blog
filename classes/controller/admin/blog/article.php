@@ -31,6 +31,8 @@ class Controller_Admin_Blog_Article extends Controller_Admin {
 		'default' => 'admin/layout/wide_column_with_menu',
 	);
 
+	protected $_view_menu_map = array();
+
 	protected $_current_nav = 'admin/blog';
 
 	/**
@@ -49,7 +51,7 @@ class Controller_Admin_Blog_Article extends Controller_Admin {
 		$arch = Sprig::factory('article', array('state'=>'archived'))->load(NULL,FALSE)->count();
 		$arch = ($arch > 0) ? ' ['.$arch.']' : '';
 
-		return View::factory('blog/admin/menu')
+		return View::factory('blog/admin/menu/default')
 			->set('links', array(
 				'Drafts'.$drafts => Request::instance()->uri(array('action'=>'list', 'type'=>'draft')),
 				'Published'.$pub => Request::instance()->uri(array('action'=>'list', 'type'=>'published')),

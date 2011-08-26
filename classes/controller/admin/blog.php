@@ -23,7 +23,16 @@ class Controller_Admin_Blog extends Controller_Admin {
 		'default' => 'admin/layout/narrow_column_with_menu',
 	);
 
+	protected $_view_menu_map = array();
+
 	protected $_current_nav = 'admin/blog';
+
+	/**
+	 * Generate menu for blog management
+	 */
+	protected function _menu() {
+		return View::factory('blog/admin/menu/default');
+	}
 
 	/**
 	 * Blog management dashboard, display blog statistics
@@ -42,18 +51,6 @@ class Controller_Admin_Blog extends Controller_Admin {
 		$stats['tags']['total']       = count($tags);
 		$stats['articles']['total']   = count($articles);
 		$stats['comments']['total']   = count($comments);
-	}
-
-	/**
-	 * Generate menu for blog management
-	 */
-	protected function _menu() {
-		return View::factory('blog/admin/menu')
-			->set('links', array(
-				'Create Article'  => Route::get('admin/blog')->uri(array('controller'=>'article', 'action'=>'new')),
-				'Create Category' => Route::get('admin/blog')->uri(array('controller'=>'category', 'action'=>'new')),
-				'Create Tag'      => Route::get('admin/blog')->uri(array('controller'=>'tag', 'action'=>'new')),
-			));
 	}
 
 }	// End of Controller_Admin_Blog
