@@ -8,6 +8,11 @@ Abstract :
 <?php echo $article->abstract ?>
 <hr>
 <?php echo $article->text ?>
+<br>Photos: <br>
+<?php foreach($article->photos as $photo): ?>
+<?= HTML::Image($photo->path, array('alt'=>$photo->title)) ?>
+<br>
+<?php endforeach ?>
 
 <?php echo $comment_form ?> 
 <?php echo $comment_list ?> 

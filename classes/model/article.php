@@ -17,6 +17,7 @@ class Model_Article extends Versioned_Sprig
 	 */
 	public function _init() {
 		parent::_init();
+		$this->_title_key = "title";
 		$this->_fields += array(
 			'id'         => new Sprig_Field_Auto,
 			// Metadata
@@ -66,6 +67,9 @@ class Model_Article extends Versioned_Sprig
 			)),
 			'tags'       => new Sprig_Field_ManyToMany(array(
 				'model'  => 'tag',
+			)),
+			'photos' => new Sprig_Field_HasMany(array(
+				'model'  => 'photo',
 			)),
 		);
 	}
