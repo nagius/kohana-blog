@@ -31,7 +31,7 @@ class Controller_Admin_Blog_Article extends Controller_Admin {
 		'default' => 'admin/layout/wide_column_with_menu',
 	);
 
-	protected $_view_menu_map = array();
+	protected $_view_menu_map = array(
 	   'list'   => 'blog/admin/menu/list',
 	);
 
