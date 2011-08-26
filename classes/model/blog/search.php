@@ -144,6 +144,46 @@ class Model_Blog_Search extends Sprig {
 	}
 
 	/**
+	 * Load articles by title
+	 *
+	 * @param   string  article title
+	 * @param   string  [optional] article state
+	 * @return  Model_Article collection
+	 */
+	public function search_by_title($title, $state = 'published') {
+		Kohana::$log->add(Kohana::DEBUG,
+			'Executing Model_Blog_Search::search_by_title');
+
+		$query = DB::select()
+			->where('title', 'like', "%".$title."%")
+			->order_by('id', 'DESC')
+			->order_by('date', 'DESC');
+
+		$limit = $this->limit;
+
+		$total = DB::select(DB::expr('COUNT(*) AS count'))
+			->from('articles')
+			->where('state', '=', $state)
+			->where('title', 'like', "%$title%");
+
+		if ($state != 'all')
+		{
+			$query->where('state', '=', $state);
+			$total->where('state', '=', $state);
+		}
+
+		$this->total=$total->execute()->get('count');
+
+		$this->pagination->setup(array(
+			'total_items'    => $this->total,
+			'items_per_page' => $limit,
+		));
+		$query->offset($this->pagination->offset);
+
+		return $this->load($query, $limit);
+	}
+
+	/**
 	 * Load articles by date
 	 *
 	 * @param   int year
