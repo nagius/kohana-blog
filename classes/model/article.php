@@ -38,7 +38,8 @@ class Model_Article extends Versioned_Sprig
 				),
 			)),
 			'text'  => new Sprig_Field_Versioned,
-			'abstract'  => new Sprig_Field_Versioned,
+			'description'  => new Sprig_Field_char,
+			'keywords'  => new Sprig_Field_char,
 			'comment'   => new Sprig_Field_Char(array(
 				'empty' => TRUE,
 				'in_db' => FALSE,

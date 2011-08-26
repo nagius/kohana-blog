@@ -3,10 +3,6 @@
 	By <?php echo ucfirst($article->author->load()->username) ?> 
 	on <?php echo $article->verbose('date') ?> 
 </p>
-<hr>
-Abstract :
-<?php echo $article->abstract ?>
-<hr>
 <?php echo $article->text ?>
 <br>Photos: <br>
 <?php foreach($article->photos as $photo): ?>

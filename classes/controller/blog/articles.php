@@ -115,6 +115,11 @@ abstract class Controller_Blog_Articles extends Controller_Template_Website {
 		{
 			throw new Kohana_Request_Exception('Article not found', NULL, 404);
 		}
+
+		// Set template headers 'stuffs
+		$this->template->metas['Description'] = $article->description;
+		$this->template->metas['Keywords'] = $article->keywords;
+
 	}
 
 	/**

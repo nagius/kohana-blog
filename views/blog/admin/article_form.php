@@ -27,10 +27,16 @@
 	<?php echo $article->input('text') ?> 
 </p>
 
-<?php echo isset($errors['abstract']) ? '<p class="error">'.$errors['abstract'].'</p>' : '' ?> 
+<?php echo isset($errors['description']) ? '<p class="error">'.$errors['description'].'</p>' : '' ?> 
 <p>
-	<?php echo $article->label('abstract') ?> 
-	<?php echo $article->input('abstract') ?> 
+	<?php echo $article->label('description') ?> 
+	<?php echo $article->input('description') ?> 
+</p>
+
+<?php echo isset($errors['keywords']) ? '<p class="error">'.$errors['keywords'].'</p>' : '' ?> 
+<p>
+	<?php echo $article->label('keywords') ?> 
+	<?php echo $article->input('keywords') ?> 
 </p>
 
 <?php echo isset($errors['state']) ? '<p class="error">'.$errors['state'].'</p>' : '' ?> 
