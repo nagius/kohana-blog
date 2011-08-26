@@ -117,7 +117,7 @@ class Model_Article extends Versioned_Sprig
 	 * Overload Sprig::create() to set slug field
 	 */
 	public function create() {
-		$this->slug = URL::title($this->title);
+		$this->slug = URL::title($this->title,'-',TRUE);
 		return parent::create();
 	}
 
