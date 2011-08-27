@@ -8,4 +8,7 @@ return array(
 		'email_subject'    => 'Comment Report',
 		'email_type'       => 'text/html',
 	),
+    'upload' => array(
+        'folder' => 'upload/img',
+    ),
 );
